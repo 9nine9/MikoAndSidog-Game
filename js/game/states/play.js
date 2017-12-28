@@ -10,18 +10,20 @@ Scene.Play.prototype = {
     create : function(){
         this.setBtn();
 
-        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+        this.game.physics.startSystem(Phaser.Physics.P2JS);
         
         this.groundY = this.game.world.centerY + 70;
-        this.ground = this.add.sprite(0, 0, null);
-        this.game.physics.arcade.enableBody(this.ground);
-        this.ground.body.setSize(this.game.width, this.game.height - this.groundY, 0, this.groundY);
-        this.ground.body.immovable = true;
-        this.ground.body.moves = false;
+        this.ground = this.add.sprite(700, 600, 'boxSidog');
+        this.game.physics.p2.enableBody(this.ground);
+        this.game.physics.p2.gravity.y = 250;
+      //  this.ground.body.addRectangle(this.game.width, this.game.height - this.groundY, 0, this.groundY);
+        this.ground.body.kinematic = true;
+        this.ground.body.static = false;
 
         this.boxs = this.game.add.group();
         
-        this.game.physics.arcade.enable([this.ground, this.boxs]);
+        //this.game.physics.arcade.enable([this.ground, this.boxs]);
+        this.game.physics.p2.enable([this.ground, this.boxs]);
 
         //this.initBox(this.ground.position.y);
         this.initBox(this.groundY - 500);
@@ -30,15 +32,17 @@ Scene.Play.prototype = {
         //this.initBox(this.groundY - 700);
         //this.initBox(this.groundY - 800);
         //this.initBox(this.groundY - 900);
+
+        this.ground.body.createBodyCallback(this.boxs,this.groundHit,this);
     },
     
     update : function(){
-        this.game.physics.arcade.collide(this.ground, this.boxs, this.groundHit, null, this);
-        this.game.physics.arcade.collide(this.boxs, this.boxs, this.boxHit, null, this);
+        //this.game.physics.arcade.collide(this.ground, this.boxs, this.groundHit, null, this);
+        //this.game.physics.arcade.collide(this.boxs, this.boxs, this.boxHit, null, this);
     },
 
     groundHit : function(ground, box){
-        //alert('a');
+        alert('a');
         box.body.position.y = this.ground.body.position.y - box.body.height;
         this.checkBox = box.key;
         if(this.checkBox == this.checkInput){

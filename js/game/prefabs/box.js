@@ -4,9 +4,10 @@ var Box = function(game, x, y, key){
     this.scale.setTo(0.3);
     this.anchor.setTo(0.5);
     
-    this.game.physics.arcade.enableBody(this);
-    this.body.allowGravity = true;
-    this.body.gravity.setTo(0, 2000);
+    this.game.physics.p2.enableBody(this);
+    this.body.mass = 10;
+    //this.body.allowGravity = true;
+    //this.body.gravity.setTo(0, 2000);
     //this.collideWorldBounds = true;
     //this.checkWorldBounds = true;   
     //this.onOutOfBoundsKill = true;
