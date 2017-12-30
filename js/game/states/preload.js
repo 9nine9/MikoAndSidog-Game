@@ -1,10 +1,25 @@
 Scene.Preload = function () {};
+//  The Google WebFont Loader will look for this object, so create it before loading the script.
+WebFontConfig = {
+
+    //  'active' means all requested fonts have finished loading
+    //  We set a 1 second delay before calling 'createText'.
+    //  For some reason if we don't the browser cannot render the text the first time it's created.
+    active: function() { game.time.events.add(Phaser.Timer.SECOND, createText, this); },
+
+    //  The Google Fonts we want to load (specify as many as you like in the array)
+    google: {
+      families: ['Revalia','Josefin Sans']
+    }
+
+};
 Scene.Preload.prototype = {
     
     preload : function (){
         
         this.load.image('logo','assets/images/logo.png');
         this.load.image('backMenu','assets/images/background/bgc.png');
+        this.load.image('city','assets/images/background/mainbg.png');
         this.load.image('mikoMenu','assets/images/character/miko.png');
         this.load.image('sidogMenu','assets/images/character/sidog.png');
         this.load.image('btnPlay','assets/images/button/play-btn.png');
@@ -17,6 +32,9 @@ Scene.Preload.prototype = {
         
         this.load.image('boxSidog','assets/images/character/box-sidog.png');
         this.load.image('boxMiko','assets/images/character/box-miko.png');
+
+        this.load.image('gameover','assets/images/button/retry.png');
+        this.load.image('oops','assets/images/button/wrong.png');
 
         this.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
         this.load.onLoadStart.add(this.loadStart, this);

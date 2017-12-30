@@ -4,13 +4,43 @@ Scene.Play = function () {
     this.curBox;
     this.pressed = false;
     this.touchground = false;
+    this.reg = {};
 };
 
 Scene.Play.prototype = {
     render : function(){
         this.game.debug.body(this.ground);
+      
     },
     create : function(){
+
+         //  A simple background for our game
+         this.bg = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY, 'city');
+         this.bg.anchor.setTo(0.5, 0.5);
+
+        //time
+        this.counter = 60;
+        this.texttime = 0;
+        this.penalty  = 0;
+        
+
+        this.texttime = this.game.add.text(80,60, this.counter , { font: "64px Josefin Sans", fill: "#ffffff", align: "center" });
+        //this.text.anchor.setTo(0.5, 0.5);
+
+        this.game.time.events.loop(Phaser.Timer.SECOND, this.updateCounter, this);
+
+
+        //score
+        this.score = 0;
+
+        this.textscore = this.game.add.text(this.game.world.centerX, this.game.world.centerY + 300, this.score, { font: "64px Josefin Sans", fill: "#ffffff", align: "center" });
+        this.textscore.anchor.setTo(0.5, 0.5);
+
+        // initiate the modal class
+        this.reg.modal = new gameModal(this.game);
+        this.createModals();
+
+        //button
         this.setBtn();
 
         this.game.physics.startSystem(Phaser.Physics.P2JS);
@@ -28,21 +58,27 @@ Scene.Play.prototype = {
 
         this.groundY = this.game.world.centerY + 70;
         this.ground = this.add.sprite(0, 0, null);
-        this.game.physics.p2.enableBody(this.ground,true);
+        //debug mode
+        //this.game.physics.p2.enableBody(this.ground,true);
+        this.game.physics.p2.enableBody(this.ground);
         this.game.physics.p2.gravity.y = 1000;
         this.ground.body.addRectangle(this.game.width, this.game.height - (this.groundY - 100), this.game.width/2, this.game.height);
         this.ground.body.kinematic = true;
         this.ground.body.static = false;
 
         this.wall = this.add.sprite(0, 0, null);
-        this.game.physics.p2.enableBody(this.wall,true);
-    
+        //debug wall
+       // this.game.physics.p2.enableBody(this.wall,true);
+       this.game.physics.p2.enableBody(this.wall);
+
+       //first wall
         this.wall.body.addRectangle(400, this.game.height*5 , this.game.world.centerX - 255, this.game.height/2);
         this.wall.body.kinematic = true;
         //  Set the ships collision group
         this.wall.body.setCollisionGroup(this.groundCollisionGroup);
         this.wall.body.collides([this.boxCollisionGroup, this.groundCollisionGroup]);
 
+        //second wall
         this.wall.body.addRectangle(400, this.game.height*5 , this.game.world.centerX + 255, this.game.height/2);
         this.wall.body.kinematic = true;
         //  Set the ships collision group
@@ -89,12 +125,98 @@ Scene.Play.prototype = {
          //   this.boxs.remove(this.curBox);
             this.curBox.sprite.kill();
            
+            this.score++;
+            this.textscore.setText(this.score);
             this.initBox(this.groundY - 520);  
-        }else if(!this.pressed){
-            console.log("not press");
+        }else if(this.checkBox != this.checkInput && this.curBox != null && this.pressed && this.touchground){
+            //this.textscore.setText("wrong");
+            console.log("Wrong");
+            this.reg.modal.showModal("wrong");
+            this.penalty=2;
+         //   this.keyMiko.enabled = false;
+           // this.keySidog.enabled = false;
         }
 
     },
+
+    updateCounter : function() {
+
+        if(this.counter > 0){
+        
+            this.counter--;
+        
+        }else{
+            if(!this.pressed){
+            this.keyMiko.enabled = false;
+            this.keySidog.enabled = false;
+            }
+            this.reg.modal.hideModal("wrong");
+            this.reg.modal.showModal("game over");
+        }
+       
+            this.texttime.setText(this.counter);
+        
+            if(this.penalty > 0){
+                this.penalty--;
+                console.log("ok");
+
+                if(!this.pressed){
+                    this.keyMiko.enabled = false;
+                    this.keySidog.enabled = false;
+                }
+               
+            }else if(this.penalty == 0){
+                this.reg.modal.hideModal("wrong");
+                this.keyMiko.enabled = true;
+                this.keySidog.enabled = true;
+                this.penalty--;
+            }
+            console.log(this.penalty);
+        
+    
+    },
+
+    createModals : function(){
+         //////// modal test ////////////
+    this.reg.modal.createModal({
+        type: "game over",
+        includeBackground: true,
+        modalCloseOnInput: false,
+        itemsArr: [{
+            type: "text",
+            content: "Try Again ? ",
+            fontFamily: "Josefin Sans" ,
+            fontSize: 42,
+            color: "0xFEFF49",
+            offsetY: -100
+        }, {
+            type: "image",
+            content: "gameover",
+            offsetY: 50,
+            contentScale: 0.6,
+            callback: function() {
+                this.game.state.restart();
+            }
+        }]
+    });
+
+    this.reg.modal.createModal({
+        type: "wrong",
+        includeBackground: true,
+        modalCloseOnInput: false,
+        itemsArr: [
+             {
+            type: "image",
+            content: "oops",
+            offsetY: 70,
+            contentScale: 0.6,
+        }]
+    });
+
+
+
+    },
+
 
     groundHit : function(ground,box){
  //  groundHit : function(body, box, shapeA, shapeB, equation){  
@@ -106,7 +228,7 @@ Scene.Play.prototype = {
         this.touchground = true;
         this.checkBox = box.sprite.key;
         this.curBox = box;
-        console.log(this.checkInput);
+      //  console.log(this.checkInput);
        /* if(this.checkBox == this.checkInput){
             box.sprite.kill();
             this.initBox(this.groundY - 520);
@@ -122,7 +244,7 @@ Scene.Play.prototype = {
     initBox(height){
         var rand = Math.floor(Math.random() * 100);
         var obj = (rand < 50) ? 'boxMiko' : 'boxSidog';
-        console.log(rand+" "+obj);
+        //console.log(rand+" "+obj);
         this.createBox(obj, this.game.world.centerX, height);
     },
 
@@ -140,52 +262,52 @@ Scene.Play.prototype = {
             this.action('miko', 0.7);
             this.checkInputBox('boxMiko');
             this.pressed = true;
-            console.log("state "+ this.pressed);
+            //console.log("state "+ this.pressed);
         }, this);
         this.btnMiko.events.onInputUp.add(function(){
             this.action('miko', 1);
             this.checkInputBox('')
             this.pressed = false;
-            console.log("state "+ this.pressed);
+           // console.log("state "+ this.pressed);
         }, this);
-        var keyMiko = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-        keyMiko.onDown.add(function(){
+        this.keyMiko = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+        this.keyMiko.onDown.add(function(){
             this.action('miko', 0.7);
             this.checkInputBox('boxMiko');
             this.pressed = true;
-            console.log("state "+ this.pressed);
+           // console.log("state "+ this.pressed);
         }, this);
-        keyMiko.onUp.add(function(){
+        this.keyMiko.onUp.add(function(){
             this.action('miko', 1)
             this.checkInputBox('')
             this.pressed = false;
-            console.log("state "+ this.pressed);
+           // console.log("state "+ this.pressed);
         }, this);
         this.btnSidog.inputEnabled = true;
         this.btnSidog.events.onInputDown.add(function(){
             this.action('sidog', 0.7);
             this.checkInputBox('boxSidog')
             this.pressed = true;
-            console.log("state "+ this.pressed);
+            //console.log("state "+ this.pressed);
         }, this);
         this.btnSidog.events.onInputUp.add(function(){
             this.action('sidog', 1);
             this.checkInputBox('')
             this.pressed = false;
-            console.log("state "+ this.pressed);
+            //console.log("state "+ this.pressed);
         }, this);
-        var keySidog = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
-        keySidog.onDown.add(function(){
+        this.keySidog = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+        this.keySidog.onDown.add(function(){
             this.action('sidog', 0.7);
             this.checkInputBox('boxSidog')
             this.pressed = true;
-            console.log("state "+ this.pressed);
+           // console.log("state "+ this.pressed);
         }, this);
-        keySidog.onUp.add(function(){
+        this.keySidog.onUp.add(function(){
             this.action('sidog', 1);
             this.checkInputBox('')
             this.pressed = false;
-            console.log("state "+ this.pressed);
+           // console.log("state "+ this.pressed);
         }, this);
     },
 
@@ -205,10 +327,10 @@ Scene.Play.prototype = {
     createBox : function(boxSprite, x, y){ 
         //set no first elements in the group of boxs
         var box = this.boxs.getFirstExists(false);
-        console.log(boxSprite+" createfirst");
+       // console.log(boxSprite+" createfirst");
       //  if(!box){
             box = new Box(this.game, 0, 0, boxSprite);
-            console.log(boxSprite+" create");
+          //  console.log(boxSprite+" create");
             box.body.setCollisionGroup(this.boxCollisionGroup);
 
             //  Pandas will collide against themselves and the player
