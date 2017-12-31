@@ -5,13 +5,7 @@ var Box = function(game, x, y, key){
     this.anchor.setTo(0.5);
     
     this.game.physics.p2.enableBody(this);
-    this.body.mass = 5000;
-    //this.body.allowGravity = true;
-    //this.body.gravity.setTo(0, 2000);
-    //this.collideWorldBounds = true;
-    //this.checkWorldBounds = true;   
-    //this.onOutOfBoundsKill = true;
-    
+    //this.body.mass = 5000;
     //this.events.onRevived.add(this.onRevived , this);
     
 };

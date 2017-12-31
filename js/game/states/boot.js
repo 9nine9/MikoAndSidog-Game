@@ -27,7 +27,7 @@ Scene.Boot.prototype = {
           this.scale.maxHeight = 1536;
           this.scale.forceLandscape = true;
           this.scale.pageAlignHorizontally = true;
-          this.scale.setScreenSize(true);
+          //this.scale.setScreenSize(true);
         }
 
         //  By this point the preloader assets have loaded to the cache, we've set the game settings
