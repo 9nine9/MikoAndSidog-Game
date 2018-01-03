@@ -28,7 +28,7 @@ Scene.Play.prototype = {
     this.bouncefx.volume = 0.3;
 
         //time
-        this.counter = 6;
+        this.counter = 10;
         this.texttime = 0;
         this.penalty  = 0;
         
@@ -137,6 +137,11 @@ Scene.Play.prototype = {
                
                 this.score++;
                 this.textscore.setText("Score : "+this.score);
+
+                if(this.score % 10 == 0){
+                    this.counter+=3;
+                    this.reg.modal.showModal("time");
+                }
             }
             else{
                 //console.log("Wrong");
@@ -153,6 +158,7 @@ Scene.Play.prototype = {
             if(this.counter > 0){
             
                 this.counter--;
+                this.reg.modal.hideModal("time");
             
             }
             else{
@@ -247,6 +253,23 @@ Scene.Play.prototype = {
                     content: "oops",
                     offsetY: 70,
                     contentScale: 0.6,
+                }
+            ]
+        });
+
+        this.reg.modal.createModal({
+            type: "time",
+            includeBackground: false,
+            modalCloseOnInput: false,
+            itemsArr: [
+                {
+                    type: "text",
+                    content: "+3 Sec",
+                    fontFamily: "Josefin Sans" ,
+                    fontSize: 80,
+                    color: "0xFEFF49",
+                    offsetY: 80,
+                    offsetX: -100,
                 }
             ]
         });
