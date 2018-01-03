@@ -1,9 +1,9 @@
 var Box = function(game, x, y, key){
     Phaser.Sprite.call(this, game, x, y, key, 0);
-    
-    this.scale.setTo(0.3);
+    var scaleRatio = window.devicePixelRatio/3;
+    this.scale.setTo(scaleRatio,scaleRatio);
     this.anchor.setTo(0.5);
-    
+    //alert(this.width);
     this.game.physics.p2.enableBody(this);
     //this.body.mass = 5000;
     //this.events.onRevived.add(this.onRevived , this);

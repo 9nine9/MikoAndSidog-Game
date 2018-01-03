@@ -34,7 +34,13 @@ Scene.Preload.prototype = {
         this.load.image('boxMiko','assets/images/character/box-miko.png');
 
         this.load.image('gameover','assets/images/button/retry.png');
+        this.load.image('share','assets/images/button/share.png');
         this.load.image('oops','assets/images/button/wrong.png');
+
+
+        this.game.load.audio('cat', 'assets/audio/cat.wav');
+        this.game.load.audio('dog', 'assets/audio/dog.wav');
+        this.game.load.audio('bounce', 'assets/audio/bounce.wav');
 
         this.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
         this.load.onLoadStart.add(this.loadStart, this);

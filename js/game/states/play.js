@@ -10,6 +10,23 @@ Scene.Play.prototype = {
       
     },
     create : function(){
+        //sound
+
+	//	Here we set-up our audio sprite
+	this.fxcat = this.game.add.audio('cat');
+    //this.fxcat.allowMultiple = true;
+    //this.fxcat.addMarker('cat', 0, 2.0);
+    this.fxcat.volume = 0.4;
+
+    //	Here we set-up our audio sprite
+	this.fxdog = this.game.add.audio('dog');
+    //this.fxdog.allowMultiple = true;
+    //this.fxdog.addMarker('dog', 2, 4.0);
+    this.fxdog.volume = 1;
+    
+    this.bouncefx = this.game.add.audio('bounce');
+    this.bouncefx.volume = 0.3;
+
         //time
         this.counter = 6;
         this.texttime = 0;
@@ -27,16 +44,19 @@ Scene.Play.prototype = {
         this.isPenalty = false;
         this.isGameOver = false;
 
+       var scaleRatio = window.devicePixelRatio;
+
          //  A simple background for our game
         this.bg = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY, 'city');
         this.bg.anchor.setTo(0.5, 0.5);        
-
+        this.bg.scale.setTo(scaleRatio, scaleRatio);
+       // alert("Sr " + scaleRatio );
         this.texttime = this.game.add.text(80,60, this.counter , { font: "64px Josefin Sans", fill: "#ffffff", align: "center" });
         //this.text.anchor.setTo(0.5, 0.5);
 
         this.game.time.events.loop(Phaser.Timer.SECOND, this.updateCounter, this);
 
-        this.textscore = this.game.add.text(this.game.world.centerX, this.game.world.centerY + 300, this.score, { font: "64px Josefin Sans", fill: "#ffffff", align: "center" });
+        this.textscore = this.game.add.text(this.game.width-200, 100 , "Score : "+this.score, { font: "64px Josefin Sans", fill: "#ffffff", align: "center" });
         this.textscore.anchor.setTo(0.5, 0.5);
 
         // initiate the modal class
@@ -78,14 +98,14 @@ Scene.Play.prototype = {
        this.game.physics.p2.enableBody(this.wall);
 
        //first wall
-        this.wall.body.addRectangle(400, this.game.height*5 , this.game.world.centerX - 255, this.game.height/2);
+        this.wall.body.addRectangle(130*scaleRatio, this.game.height*5 , this.game.world.centerX - (130*scaleRatio), this.game.height/2);
         this.wall.body.kinematic = true;
         //  Set the ships collision group
         this.wall.body.setCollisionGroup(this.groundCollisionGroup);
         this.wall.body.collides([this.boxCollisionGroup, this.groundCollisionGroup]);
 
         //second wall
-        this.wall.body.addRectangle(400, this.game.height*5 , this.game.world.centerX + 255, this.game.height/2);
+        this.wall.body.addRectangle(130*scaleRatio, this.game.height*5 , this.game.world.centerX + (130*scaleRatio), this.game.height/2);
         this.wall.body.kinematic = true;
         
         //  Set the collision group
@@ -116,7 +136,7 @@ Scene.Play.prototype = {
                 this.curBox.sprite.kill();
                
                 this.score++;
-                this.textscore.setText(this.score);
+                this.textscore.setText("Score : "+this.score);
             }
             else{
                 //console.log("Wrong");
@@ -154,7 +174,7 @@ Scene.Play.prototype = {
                 this.reg.modal.hideModal("wrong");
                 this.penalty = -1;
             }
-            console.log(this.penalty);
+           // console.log(this.penalty);
         }
     
     },
@@ -195,12 +215,23 @@ Scene.Play.prototype = {
 
                 {
                     type: "image",
-                    content: "gameover",
+                    content: "share",
                     offsetX: 150,
                     offsetY: 50,
                     contentScale: 0.6,
                     callback: function() {
-                        shareScore(globalScore);
+                      // shareScore(globalScore);
+                       modal.style.display = "block";
+                    /*   var txt;
+                       var r = confirm("Press a button!");
+                       if (r == true) {
+                          // txt = "You pressed OK!";
+                            shareScore(globalScore);
+                        } else {
+                           txt = "You pressed Cancel!";
+                       }
+                       alert(txt);
+                       */
                     }
                 }
             ]
@@ -229,6 +260,8 @@ Scene.Play.prototype = {
         this.touchground = true;
         this.checkBox = box.sprite.key;
         this.curBox = box;
+
+        this.bouncefx.play();
     },
 
     initBox(height){
@@ -238,17 +271,20 @@ Scene.Play.prototype = {
     },
 
     setBtn : function(){
-        this.btnMiko = this.add.sprite(this.game.world.centerX - 100 , this.game.height - 100, 'btnMiko');
-        this.btnMiko.anchor.setTo(0.5); 
-        this.btnMiko.scale.setTo(0.3, 0.3);
+        var scaleRatio = window.devicePixelRatio/3;
 
-        this.btnSidog = this.add.sprite(this.game.world.centerX + 100 , this.game.height - 100, 'btnSidog');
+        this.btnMiko = this.add.sprite(this.game.world.centerX - 150 , this.game.height - 100, 'btnMiko');
+        this.btnMiko.anchor.setTo(0.5); 
+        this.btnMiko.scale.setTo(scaleRatio, scaleRatio);
+
+        this.btnSidog = this.add.sprite(this.game.world.centerX + 150 , this.game.height - 100, 'btnSidog');
         this.btnSidog.anchor.setTo(0.5); 
-        this.btnSidog.scale.setTo(0.3, 0.3);
+        this.btnSidog.scale.setTo(scaleRatio, scaleRatio);
 
         this.btnMiko.inputEnabled = true;
         this.btnMiko.events.onInputDown.add(function(){
             this.pressKey('miko', 0.7, 'boxMiko', true);
+            this.fxcat.play();
         }, this);
         this.btnMiko.events.onInputUp.add(function(){
             this.pressKey('miko', 1, '', false);
@@ -256,6 +292,7 @@ Scene.Play.prototype = {
         this.keyMiko = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
         this.keyMiko.onDown.add(function(){
             this.pressKey('miko', 0.7, 'boxMiko', true);
+            this.fxcat.play();
         }, this);
         this.keyMiko.onUp.add(function(){
             this.pressKey('miko', 1, '', false);
@@ -263,6 +300,7 @@ Scene.Play.prototype = {
         this.btnSidog.inputEnabled = true;
         this.btnSidog.events.onInputDown.add(function(){
             this.pressKey('sidog', 0.7, 'boxSidog', true);
+            this.fxdog.play();
         }, this);
         this.btnSidog.events.onInputUp.add(function(){
             this.pressKey('sidog', 1, '', false);
@@ -270,6 +308,7 @@ Scene.Play.prototype = {
         this.keySidog = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
         this.keySidog.onDown.add(function(){
             this.pressKey('sidog', 0.7, 'boxSidog', true);
+            this.fxdog.play();
         }, this);
         this.keySidog.onUp.add(function(){
             this.pressKey('sidog', 1, '', false);
@@ -311,7 +350,6 @@ Scene.Play.prototype = {
     },
 
 };
-
 
 
 window.fbAsyncInit = function() {
@@ -359,7 +397,7 @@ function shareScore(n){
                 {
                     'og:url': 'http://mage.telematics.its.ac.id/play',
                     'og:title': 'Play Miko and Sidog in MAGE 2018',
-                    'og:image': 'http://localhost/mage/public/play/assets/images/character/miko1.png',
+                    'og:image': 'http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg',
                     'og:description': 'I scored ' + n + ' points on this ridiculous game!! Can you beat my score, hum??'
                 }
             })
