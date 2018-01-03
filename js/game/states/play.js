@@ -12,20 +12,20 @@ Scene.Play.prototype = {
     create : function(){
         //sound
 
-	//	Here we set-up our audio sprite
-	this.fxcat = this.game.add.audio('cat');
-    //this.fxcat.allowMultiple = true;
-    //this.fxcat.addMarker('cat', 0, 2.0);
-    this.fxcat.volume = 0.4;
+    	//	Here we set-up our audio sprite
+    	this.fxcat = this.game.add.audio('cat');
+        //this.fxcat.allowMultiple = true;
+        //this.fxcat.addMarker('cat', 0, 2.0);
+        this.fxcat.volume = 0.4;
 
-    //	Here we set-up our audio sprite
-	this.fxdog = this.game.add.audio('dog');
-    //this.fxdog.allowMultiple = true;
-    //this.fxdog.addMarker('dog', 2, 4.0);
-    this.fxdog.volume = 1;
-    
-    this.bouncefx = this.game.add.audio('bounce');
-    this.bouncefx.volume = 0.3;
+        //	Here we set-up our audio sprite
+    	this.fxdog = this.game.add.audio('dog');
+        //this.fxdog.allowMultiple = true;
+        //this.fxdog.addMarker('dog', 2, 4.0);
+        this.fxdog.volume = 1;
+        
+        this.bouncefx = this.game.add.audio('bounce');
+        this.bouncefx.volume = 0.3;
 
         //time
         this.counter = 10;

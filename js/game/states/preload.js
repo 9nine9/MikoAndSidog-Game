@@ -51,7 +51,7 @@ Scene.Preload.prototype = {
         
     },
     update : function(){
-        if(!this.cache.isSoundDecoded('gameMusic') && this.ready === true){
+        if(this.cache.isSoundDecoded('cat') && this.cache.isSoundDecoded('dog') && this.cache.isSoundDecoded('bounce') && this.ready === true){
             if(this.game.input.activePointer.isDown){
                 this.state.start('MainMenu');
             }
@@ -76,14 +76,14 @@ Scene.Preload.prototype = {
 
         this.splash = this.add.sprite(this.game.world.centerX , this.game.world.centerY , obj);
         this.splash.anchor.setTo(0.5);
-        this.splash.scale.setTo(0.2, 0.2);
+        this.splash.scale.setTo(window.devicePixelRatio/5, window.devicePixelRatio/5);
         this.startBounce();  
 
         var loadingText = 'Loading';
         this.loadingText = this.add.text(this.game.world.centerX, (this.game.world.centerY + this.splash.height / 2 + 70), loadingText);
         this.loadingText.anchor.setTo(0.5);
         this.loadingText.font = 'Revalia';
-        this.loadingText.fontSize = 32;
+        this.loadingText.fontSize = window.devicePixelRatio*32;
         this.loadingText.fill = '#fff';
         this.loadingText.align = 'center';
 
@@ -94,7 +94,7 @@ Scene.Preload.prototype = {
         this.whatText = this.add.text(this.game.world.centerX, (this.game.height - 100), whatText);
         this.whatText.anchor.setTo(0.5);
         this.whatText.font = 'Times New Roman';
-        this.whatText.fontSize = 16;
+        this.whatText.fontSize = window.devicePixelRatio*16;
         this.whatText.fill = '#fff';
         this.whatText.align = 'center';
     },

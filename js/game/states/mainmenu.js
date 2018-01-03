@@ -12,15 +12,15 @@ Scene.MainMenu.prototype = {
 
         this.sidogMenu = this.add.sprite(this.game.world.centerX + 30, this.game.world.centerY , 'sidogMenu');
         this.sidogMenu.anchor.setTo(0.5); 
-        this.sidogMenu.scale.setTo(0.4, 0.4);
+        this.sidogMenu.scale.setTo(window.devicePixelRatio/2.5, window.devicePixelRatio/2.5);
 
         this.mikoMenu = this.add.sprite(this.game.world.centerX - 60, this.game.world.centerY + 50, 'mikoMenu');
         this.mikoMenu.anchor.setTo(0.5); 
-        this.mikoMenu.scale.setTo(0.4, 0.4);
+        this.mikoMenu.scale.setTo(window.devicePixelRatio/2.5, window.devicePixelRatio/2.5);
 
         this.btnPlay = this.add.sprite(this.game.world.centerX, this.game.height - 100 , 'btnPlay');
         this.btnPlay.anchor.setTo(0.5); 
-        this.btnPlay.scale.setTo(0.3, 0.3);
+        this.btnPlay.scale.setTo(window.devicePixelRatio/3, window.devicePixelRatio/3);
         this.btnPlay.inputEnabled = true;
         this.btnPlay.events.onInputDown.add(this.play, this);  
 
@@ -28,7 +28,7 @@ Scene.MainMenu.prototype = {
         this.playText = this.add.text(this.game.world.centerX, (this.game.height - 40), playText);
         this.playText.anchor.setTo(0.5);
         this.playText.font = 'Revalia';
-        this.playText.fontSize = 20;
+        this.playText.fontSize = window.devicePixelRatio*20;
         this.playText.fill = '#fff';
         this.playText.align = 'center';
         this.timer = 0;
