@@ -52,17 +52,17 @@ Scene.Preload.prototype = {
     },
     update : function(){
         if(!this.cache.isSoundDecoded('gameMusic') && this.ready === true){
-            //if(this.game.input.activePointer.isDown){
+            if(this.game.input.activePointer.isDown){
                 this.state.start('MainMenu');
-           // }
+            }
 
-            /*this.loadingText.setText("Click The Screen");
+            this.loadingText.setText("Click The Screen");
             this.timer += this.game.time.elapsed;
             //this is in ms, not seconds.
             if (this.timer >= 500){
                 this.timer -= 500;       
                 this.loadingText.visible = !this.loadingText.visible;    
-            }*/
+            }
 
             
         }

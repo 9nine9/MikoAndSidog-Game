@@ -32,7 +32,7 @@ Scene.MainMenu.prototype = {
         this.playText.fill = '#fff';
         this.playText.align = 'center';
         this.timer = 0;
-        this.play();
+        //this.play();
     },
     
     update : function(){
