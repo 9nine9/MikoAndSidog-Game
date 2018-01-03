@@ -120,7 +120,7 @@ Scene.Play.prototype = {
         this.ground.body.collides(this.boxCollisionGroup, this.groundHit , this);
         
         for(var i = 1; i <= 6 ; i++){
-            this.initBox(this.groundY - (100*i) ); 
+            this.initBox(0 -200*i ); 
         }
    
     },
