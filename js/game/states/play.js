@@ -420,7 +420,7 @@ function shareScore(n){
                 {
                     'og:url': 'http://mage.telematics.its.ac.id/play',
                     'og:title': 'Play Miko and Sidog in MAGE 2018',
-                    'og:image': 'http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg',
+                    'og:image': 'http://mage.telematics.its.ac.id/public/play/assets/images/character/miko1.png',
                     'og:description': 'I scored ' + n + ' points on this ridiculous game!! Can you beat my score, hum??'
                 }
             })

@@ -20,7 +20,7 @@ Scene.Preload.prototype = {
         this.load.image('logo','assets/images/logo.png');
         this.load.image('backMenu','assets/images/background/bgc.png');
         this.load.image('city','assets/images/background/mainbg.png');
-        this.load.image('mikoMenu','assets/images/character/miko.png');
+        this.load.image('mikoMenu','assets/images/character/Miko.png');
         this.load.image('sidogMenu','assets/images/character/sidog.png');
         this.load.image('btnPlay','assets/images/button/play-btn.png');
 
@@ -51,7 +51,7 @@ Scene.Preload.prototype = {
         
     },
     update : function(){
-        if(this.cache.isSoundDecoded('cat') && this.cache.isSoundDecoded('dog') && this.cache.isSoundDecoded('bounce') && this.ready === true){
+        if(this.ready === true){
             if(this.game.input.activePointer.isDown){
                 this.state.start('MainMenu');
             }
@@ -87,9 +87,13 @@ Scene.Preload.prototype = {
         this.loadingText.fill = '#fff';
         this.loadingText.align = 'center';
 
-        var whatText = (rand < 50) ? 
-            'Miko is a cat.\nSstt, or you will get a scratch on your cheek.\nUulala.."Miaw miauw miauww!!" - Miko' : 
+        /*var whatText = (rand < 50) ? 
+            'Miko is a cat.\nSstt, or you will get a scratch on your cheek.. Uulala..\n"Miaw miauw miauww!!" - Miko' : 
             'What do you see, hah?\nGo home kidz, or Sidog will bites you like a b*tch.\n"Augh aug ough!!" - Sidog';
+*/
+        var whatText = (rand < 50) ? 
+            'Miko is a cat.\nSstt, or you will get a scratch on your cheek.. Uulala..\n"Miaw miauw miauww!!" - Miko' : 
+            'What do you see, hah?\nGo home kidz, or Sidog will bites you, aawwrrr\n"Augh aug ough!!" - Sidog';
 
         this.whatText = this.add.text(this.game.world.centerX, (this.game.height - 100), whatText);
         this.whatText.anchor.setTo(0.5);
